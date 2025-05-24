@@ -128,7 +128,7 @@ body {
 }
 #main-card {
   position: relative;
-  z-index: 10;
+  z-index: 1;
   background: transparent;
   opacity: 0.95;
   width: 100%;
@@ -139,6 +139,7 @@ body {
   justify-content: flex-start;
   /* transform: rotate(180deg); */
 }
+
 .top-bar {
   width: 100%;
   display: flex;
