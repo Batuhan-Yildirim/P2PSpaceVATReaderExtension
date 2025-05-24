@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VAT Reader</title>
+  <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="main-card">
+    <!-- Welcome Page Overlay -->
+      <div id="welcome-page">
+        <div id="welcome-logo-title">
+          <span id="welcome-wallet">VAT Reader</span>
+        </div>
+        <div class="welcome-bg"></div>
+        <div class="welcome-content">
+        <div id="welcome-desc">
+          Instantly extract and verify EU VAT numbers from any web page.
+        </div>
+        <button id="start-btn" class="welcome-btn">
+          <!-- <span class="lock-icon">&#128274;</span> -->
+          Start VAT Reader
+        </button>      
+        </div>
+      </div>
+    </div>
+    <!-- Extract Data Page -->
+    <div class="vat-card" id="extract-page">
+      <textarea id="output" placeholder="Extracted text..."></textarea>
+      <div class="action-buttons">
+        <button class="main-action-btn" id="extract-button">&#128269; Extract Data</button>
+        <div class="action-buttons-row">
+          <button class="main-action-btn" id="copy-btn-main">&#128203; Copy</button>
+          <button class="main-action-btn" id="restart-btn">&#129529; Delete</button>
+        </div>
+      </div>
+      <div id="bottom-bar">
+        <img src="image/logo.png" alt="Logo" id="bottom-logo">
+        <div id="powered-title" style="margin-top: 15px;">Powered by P2P SPACE</div>
+      </div>
+    </div>
+  <script src="scripts/popup.js"></script>
+</body>
+</html>

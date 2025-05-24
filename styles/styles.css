@@ -1,0 +1,278 @@
+html, body {
+  width: 360px;
+  height: 480px;
+  min-width: 360px;
+  min-height: 480px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+/* Welcome Page Overlay Styles */
+#welcome-page {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 100%;
+  max-width: 360px;
+  max-height: 480px;
+  min-width: 360px;
+  min-height: 480px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: transparent;
+  background-size: cover;
+  margin: 0 auto;
+}
+
+.welcome-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 100%;
+  background: url('earth_2.png') no-repeat center bottom;
+  background-size: cover;
+  filter: brightness(0.85) blur(0.5px);
+  z-index: 1;
+}
+
+.welcome-content {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Move content to top */
+  padding: 32px 24px 0 24px;
+  min-height: unset;
+  box-sizing: border-box;
+  margin-top: 0;
+}
+
+#welcome-logo-title {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 18px;
+  margin-top: 0;
+  z-index: 3;
+}
+
+#welcome-wallet {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #b2c6ff;
+  letter-spacing: 1.5px;
+  margin-top: 2px;
+  text-shadow: 0 1px 8px #000, 0 0px 2px #d2d0ce;
+}
+
+#welcome-desc {
+  color: #e0e0e0;
+  font-size: 1.08rem;
+  margin-bottom: 32px;
+  text-align: center;
+  max-width: 260px;
+  text-shadow: 0 1px 8px #000, 0 0px 2px #d2d0ce;
+}
+
+.welcome-btn {
+  width: 90%;
+  max-width: 260px;
+  padding: 14px 0;
+  font-size: 1.08rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #1F09FF 0%, #6bb6ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 24px 0 rgba(31, 9, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  transition: background 0.2s, box-shadow 0.2s;
+  letter-spacing: 1px;
+}
+
+.welcome-btn:hover {
+  background: linear-gradient(90deg, #6bb6ff 0%, #1F09FF 100%);
+  color: #fff;
+  box-shadow: 0 8px 32px 0 rgba(31, 9, 255, 0.22);
+}
+
+.lock-icon {
+  font-size: 1.2em;
+  margin-right: 6px;
+}
+
+/* Main Card Styles */
+body {
+  background: #000 url('earth.jpg') no-repeat center bottom;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  /* transform: rotate(180deg) ; */
+}
+#main-card {
+  position: relative;
+  z-index: 10;
+  background: transparent;
+  opacity: 0.95;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  /* transform: rotate(180deg); */
+}
+.top-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 16px 18px 0 0;
+  box-sizing: border-box;
+  min-height: 40px;
+}
+/* ...existing code... */
+
+.vat-card {
+  background: rgba(10, 14, 24, 0.92);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px 0 rgba(218, 218, 216, 0.18), 0 1.5px 16px 0 rgba(201, 199, 198, 0.1);
+  padding: 24px 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center all content vertically */
+  gap: 24px;
+  margin: auto;
+  width: 94%;
+  max-width: 280px;
+  min-height: 280px;
+  position: relative;
+  z-index: 2;
+  border: 1.5px solid rgba(218, 218, 216, 0.18);
+}
+
+#output {
+  width: 100%;
+  min-height: 46px;
+  max-height: 70px;
+  resize: none;
+  font-size: 1.15rem;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: rgba(24, 28, 44, 0.95);
+  color: #fffbe6;
+  margin-bottom: 0;
+  box-shadow: 0 2px 8px rgba(223, 223, 214, 0.18);
+  transition: border 0.2s;
+  text-align: center;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  outline: 2px solid transparent;
+  margin-left: 0;
+  margin-right: 0;
+  display: block;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-buttons-row {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  justify-content: center;
+  margin-top: 0;
+}
+
+.main-action-btn, #extract-button {
+  flex: 1 1 0;
+  min-width: 120px;
+  padding: 14px 0;
+  font-size: 1.08rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #1F09FF 0%, #d2d0ce 100%);
+  color: #fffbe6;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(218, 218, 216, 0.18);
+  transition: background 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  letter-spacing: 1px;
+}
+
+.main-action-btn:hover, #extract-button:hover {
+  background: linear-gradient(90deg, #d2d0ce 0%, #1F09FF 100%);
+  box-shadow: 0 4px 16px rgba(218, 218, 216, 0.18);
+  color: #fff;
+}
+
+#bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  background: transparent;
+  border-radius: 0 0 12px 12px;
+  margin-top: 18px;
+  margin-bottom: 0;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  z-index: 2;
+  gap: 8px;
+}
+
+#powered-title {
+  font-size: 13px;
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-shadow: 0 1px 8px #000, 0 0px 2px #d4d2ce;
+}
+
+#bottom-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: contain;
+  background: transparent;
+  margin-right: 3px;
+  box-shadow: none;
+  border: none;
+  display: inline-block;
+  vertical-align: middle;
+}
