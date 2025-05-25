@@ -126,19 +126,6 @@ body {
   overflow: hidden;
   /* transform: rotate(180deg) ; */
 }
-#main-card {
-  position: relative;
-  z-index: 1;
-  background: transparent;
-  opacity: 0.95;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  /* transform: rotate(180deg); */
-}
 
 .top-bar {
   width: 100%;
@@ -164,7 +151,7 @@ body {
   margin: auto;
   width: 94%;
   max-width: 280px;
-  min-height: 280px;
+  min-height: 400px;
   position: relative;
   z-index: 2;
   border: 1.5px solid rgba(218, 218, 216, 0.18);
