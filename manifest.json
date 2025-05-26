@@ -20,9 +20,14 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "Vat_Formats/extractors.js",
-        "scripts/tesseract.min.js",
-        "image/*"
+        "scripts/pdfjs-5.2.133-dist/build/pdf.mjs",
+        "scripts/pdfjs-5.2.133-dist/build/pdf.worker.mjs",
+        "scripts/tesseract.js-6.0.1/dist/browser/tesseract.min.js",
+        "scripts/tesseract.js-6.0.1/dist/worker.min.js",
+        "scripts/ocr_reader.js",
+        "image/icon.png",
+        "image/logo.png",
+        "Vat_Formats/extractors.js"
       ],
       "matches": ["<all_urls>"]
     }
