@@ -159,6 +159,9 @@ document.addEventListener('DOMContentLoaded', function () {
       output.select();
       document.execCommand('copy');
       output.blur();
+      const status = document.getElementById('copy-status');
+      status.style.display = 'inline-block';
+      setTimeout(() => { status.style.display = 'none'; }, 1200);
     };
   }
 

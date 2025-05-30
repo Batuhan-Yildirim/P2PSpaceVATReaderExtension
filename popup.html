@@ -24,11 +24,16 @@
     </div>
     <!-- Extract Data Page -->
     <div class="vat-card" id="extract-page" style="display:none; margin-top: 20px;">
-      <textarea id="output" placeholder="Extracted text..." rows="4" cols="20"></textarea>
+      <div class="copy-area">
+        <input id="output" class="copy-input" type="text" placeholder="Extracted text..." readonly />
+        <button id="copy-btn-main" class="copy-btn-main" title="Copy to Clipboard">
+          <img src="image/copy-icon.svg" alt="Copy" style="width:24px;height:24px;">
+        </button>
+        <span id="copy-status" class="copy-status">Copied</span>
+      </div>
       <div class="action-buttons">
         <button class="main-action-btn" id="extract-button">&#128269; Extract Data</button>
         <div class="action-buttons-row">
-          <button class="main-action-btn" id="copy-btn-main">&#128203; Copy</button>
           <button class="main-action-btn" id="restart-btn">&#129529; Delete</button>
         </div>
       </div>

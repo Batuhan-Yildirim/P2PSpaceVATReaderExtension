@@ -264,3 +264,49 @@ body {
   display: inline-block;
   vertical-align: middle;
 }
+
+.copy-area {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 10px;
+}
+.copy-input {
+  width: 100%;
+  padding: 10px 44px 10px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1em;
+  background: #fafbfc;
+  outline: none;
+}
+.copy-btn-main {
+  position: absolute;
+  right: 8px;
+  background: #e6f0ff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+.copy-btn-main:hover {
+  background: #b3d1ff;
+}
+.copy-status {
+  display: none;
+  position: absolute;
+  top: -32px;
+  right: 0;
+  background: #4caf50;
+  color: #fff;
+  padding: 2px 12px;
+  border-radius: 16px;
+  font-size: 0.95em;
+  font-weight: 500;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
