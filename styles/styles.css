@@ -269,7 +269,6 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0;
   margin-bottom: 10px;
 }
 .copy-input {
@@ -291,6 +290,7 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
+  transition: background 0.2s;
   transition: background 0.2s;
 }
 .copy-btn-main:hover {

@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
           if (!window.Tesseract) {
             const script = document.createElement('script');
-            script.src = chrome.runtime.getURL('https://cdn.jsdelivr.net/npm/tesseract.js@v5.0.0/dist/worker.min.js');
+            script.src = chrome.runtime.getURL('tesseract.js/dist/worker.min.js');
             document.head.appendChild(script);
             await new Promise(resolve => { script.onload = resolve; });
           }
@@ -172,6 +172,30 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('output').value = '';
     };
   }
+
+  document.getElementById('ocr-btn').addEventListener('click', async () => {
+    try {
+      const text = await window.screenshotOCR();
+      document.getElementById('output').value = text;
+    } catch (err) {
+      console.error('OCR failed:', err);
+      document.getElementById('output').value = 'Error: ' + err.message;
+    }
+  });
+
+  document.getElementById('pdf-text-btn').addEventListener('click', async () => {
+    const input = document.getElementById('pdf-text-input');
+    const file = input.files[0];
+    if (file) {
+      try {
+        const text = await window.extractTextFromPdf(file);
+        document.getElementById('output').value = text;
+      } catch (err) {
+        console.error('PDF extraction failed:', err);
+        document.getElementById('output').value = 'Error: ' + err.message;
+      }
+    }
+  });
 });
 
 function resizeImage(file, maxWidth = 800) {

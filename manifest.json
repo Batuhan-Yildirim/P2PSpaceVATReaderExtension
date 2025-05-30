@@ -13,17 +13,20 @@
     "default_icon": "image/icon.png"
   },
   "permissions": [
-    "scripting",
     "activeTab",
-    "storage"
+    "scripting",
+    "storage",
+    "tabs"
   ],
   "web_accessible_resources": [
     {
       "resources": [
+        "tesseract.js/dist/worker.min.js",
+        "tesseract.js/dist/tesseract-core.wasm.js",
+        "tesseract.js/dist/tesseract.min.js",
+        "tesseract.js/dist/worker.min.js.map",
         "scripts/pdfjs-5.2.133-dist/build/pdf.mjs",
         "scripts/pdfjs-5.2.133-dist/build/pdf.worker.mjs",
-        "scripts/tesseract.js-6.0.1/dist/browser/tesseract.min.js",
-        "scripts/tesseract.js-6.0.1/dist/worker.min.js",
         "scripts/ocr_reader.js",
         "image/icon.png",
         "image/logo.png",
@@ -36,5 +39,8 @@
     "16": "image/icon.png",
     "48": "image/icon.png",
     "128": "image/icon.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   }
 }
