@@ -25,7 +25,10 @@
     <!-- Extract Data Page -->
     <div class="vat-card" id="extract-page" style="display:none; margin-top: 20px;">
       <div class="copy-area">
-        <input id="output" class="copy-input" type="text" placeholder="Extracted text..." readonly />
+        <div id="output" class="copy-input">
+            <div id="text-output" style="display: block;">Extracted text...</div>
+            <img id="screenshot-preview" style="max-width: 100%; display: none;">
+        </div>
         <button id="copy-btn-main" class="copy-btn-main" title="Copy to Clipboard">
           <img src="image/copy-icon.svg" alt="Copy" style="width:24px;height:24px;">
         </button>
@@ -33,14 +36,17 @@
       </div>
       <div class="action-buttons">
         <button class="main-action-btn" id="extract-button">&#128269; Extract Data</button>
-        <div class="action-buttons-row">
-          <button class="main-action-btn" id="restart-btn">&#129529; Delete</button>
-        </div>
+        <button class="main-action-btn" id="delete-btn">🗑️ Delete</button>
       </div>
-    <input type="file" id="ocr-image-input" accept="image/*" style="display:none;">
-    <button id="ocr-btn">Select Area for OCR</button>
     <input type="file" id="pdf-text-input" accept="application/pdf" style="display:none;">
-    <button id="pdf-text-btn">Extract PDF Text</button>
+    <button id="pdf-text-btn" class="main-action-btn">
+        <img src="image/pdf-icon.svg" alt="PDF" style="width:16px;height:16px;margin-right:4px;">
+        Extract PDF Text
+    </button>
+    <button id="capture-btn" class="main-action-btn">
+      <img src="image/screenshot-icon.svg" alt="Screenshot" style="width:16px;height:16px;margin-right:4px;">
+      Capture Screenshot
+    </button>
       <img src="image/logo.png" alt="Logo" id="bottom-logo">
       <div id="powered-title" style="margin-top: 15px;">Powered by P2P SPACE</div>
     </div>

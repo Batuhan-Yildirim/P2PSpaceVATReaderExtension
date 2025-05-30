@@ -279,6 +279,32 @@ body {
   font-size: 1em;
   background: #fafbfc;
   outline: none;
+  display: block;
+  padding: 10px;
+  background: #fff;
+  border-radius: 4px;
+  min-height: 100px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+#screenshot-preview {
+  max-width: 100%;
+  height: auto;
+  display: none;
+  margin: 0 auto;
+}
+
+#text-output {
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.copy-input img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 .copy-btn-main {
   position: absolute;

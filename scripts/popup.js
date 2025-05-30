@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Extract Data button logic (from web page)
-  const extractBtn = document.getElementById('extract-button');
-  if (extractBtn) {
-    extractBtn.onclick = function () {
+  const extractBtnOld = document.getElementById('extract-button');
+  if (extractBtnOld) {
+    extractBtnOld.onclick = function () {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         chrome.scripting.executeScript(
           {
@@ -50,6 +50,23 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     };
   }
+
+  // Extract Data button logic (using message passing)
+  document.getElementById('extract-button').addEventListener('click', async () => {
+    try {
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      const response = await chrome.tabs.sendMessage(tab.id, { action: "extractVatNumber" });
+      
+      if (response.vatNumbers.length > 0) {
+        document.getElementById('output').value = response.vatNumbers.join('\n');
+      } else {
+        document.getElementById('output').value = 'No German VAT numbers found';
+      }
+    } catch (err) {
+      console.error('VAT extraction failed:', err);
+      document.getElementById('output').value = 'Error: ' + err.message;
+    }
+  });
 
   // OCR button logic for images
   const ocrBtn = document.getElementById('ocr-btn');
@@ -85,27 +102,34 @@ document.addEventListener('DOMContentLoaded', function () {
     };
   }
 
-  // Extract selectable text from PDF
+  // PDF text extraction button logic
   const pdfTextBtn = document.getElementById('pdf-text-btn');
   const pdfTextInput = document.getElementById('pdf-text-input');
+  
   if (pdfTextBtn && pdfTextInput) {
-    pdfTextBtn.onclick = function () {
-      pdfTextInput.value = '';
-      pdfTextInput.click();
-    };
-    pdfTextInput.onchange = async function (e) {
-      const file = e.target.files[0];
-      if (file) {
-        const output = document.getElementById('output');
-        output.value = 'Extracting selectable text from PDF...';
-        try {
-          const text = await window.extractTextFromPdf(file);
-          output.value = text || 'No selectable text found in PDF.';
-        } catch (err) {
-          output.value = 'PDF text extraction failed: ' + err.message;
-        }
-      }
-    };
+      pdfTextBtn.onclick = function() {
+          pdfTextInput.click();
+      };
+      
+      pdfTextInput.onchange = async function(e) {
+          const file = e.target.files[0];
+          if (file) {
+              const textOutput = document.getElementById('text-output');
+              const screenshotPreview = document.getElementById('screenshot-preview');
+              
+              textOutput.style.display = 'block';
+              screenshotPreview.style.display = 'none';
+              textOutput.textContent = 'Processing PDF...';
+              
+              try {
+                  const text = await window.extractTextFromPdf(file);
+                  textOutput.textContent = text || 'No text found in PDF.';
+              } catch (err) {
+                  console.error('PDF text extraction failed:', err);
+                  textOutput.textContent = 'PDF text extraction failed: ' + err.message;
+              }
+          }
+      };
   }
 
   // OCR PDF logic (for scanned/image PDFs)
@@ -166,23 +190,20 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Delete button logic
-  const restartBtn = document.getElementById('restart-btn');
-  if (restartBtn) {
-    restartBtn.onclick = function () {
-      document.getElementById('output').value = '';
-    };
+  const deleteBtn = document.getElementById('delete-btn');
+  if (deleteBtn) {
+      deleteBtn.onclick = function() {
+          const textOutput = document.getElementById('text-output');
+          const screenshotPreview = document.getElementById('screenshot-preview');
+          
+          textOutput.textContent = 'Extracted text...';
+          textOutput.style.display = 'block';
+          screenshotPreview.src = '';
+          screenshotPreview.style.display = 'none';
+      };
   }
-
-  document.getElementById('ocr-btn').addEventListener('click', async () => {
-    try {
-      const text = await window.screenshotOCR();
-      document.getElementById('output').value = text;
-    } catch (err) {
-      console.error('OCR failed:', err);
-      document.getElementById('output').value = 'Error: ' + err.message;
-    }
-  });
-
+  
+  // Keep other event listeners...
   document.getElementById('pdf-text-btn').addEventListener('click', async () => {
     const input = document.getElementById('pdf-text-input');
     const file = input.files[0];
@@ -196,6 +217,80 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   });
+
+  // Screenshot capture button logic
+  const captureBtn = document.getElementById('capture-btn');
+  if (captureBtn) {
+      captureBtn.addEventListener('click', async () => {
+          try {
+              const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+              
+              if (!tab.url.startsWith('chrome://')) {
+                  // Take screenshot
+                  const dataUrl = await chrome.tabs.captureVisibleTab(null, {
+                      format: 'png'
+                  });
+                  
+                  // Display screenshot
+                  const textOutput = document.getElementById('text-output');
+                  const screenshotPreview = document.getElementById('screenshot-preview');
+                  
+                  textOutput.style.display = 'none';
+                  screenshotPreview.style.display = 'block';
+                  screenshotPreview.src = dataUrl;
+              } else {
+                  throw new Error('Cannot capture screenshot of this page');
+              }
+          } catch (err) {
+              console.error('Screenshot failed:', err);
+              document.getElementById('text-output').textContent = 'Screenshot failed: ' + err.message;
+          }
+      });
+  }
+
+  // Extract Data button logic (consolidated)
+  const extractBtn = document.getElementById('extract-button');
+  if (extractBtn) {
+      extractBtn.addEventListener('click', async () => {
+          try {
+              const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+              
+              // First inject the extractors.js file
+              await chrome.scripting.executeScript({
+                  target: { tabId: tab.id },
+                  files: ['Vat_Formats/extractors.js']
+              });
+
+              // Then execute the extraction
+              const results = await chrome.scripting.executeScript({
+                  target: { tabId: tab.id },
+                  func: () => {
+                      const bodyText = document.body.innerText;
+                      return window.extractVAT 
+                          ? window.extractVAT(bodyText)
+                          : 'VAT extractor not loaded.';
+                  }
+              });
+
+              // Display results
+              const textOutput = document.getElementById('text-output');
+              const screenshotPreview = document.getElementById('screenshot-preview');
+              
+              textOutput.style.display = 'block';
+              screenshotPreview.style.display = 'none';
+              
+              textOutput.textContent = results && results[0]?.result 
+                  ? results[0].result 
+                  : 'No VAT numbers found';
+
+          } catch (err) {
+              console.error('VAT extraction failed:', err);
+              document.getElementById('text-output').textContent = 'VAT extraction failed: ' + err.message;
+          }
+      });
+  } else {
+      console.error('Extract button not found in the DOM');
+  }
 });
 
 function resizeImage(file, maxWidth = 800) {
