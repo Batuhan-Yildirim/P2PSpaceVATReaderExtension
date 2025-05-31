@@ -3,60 +3,10 @@
 
 console.log("Content script loaded");
 
-// Listen for messages from popup.js or background.js
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-  if (message.action === "extractVAT") {
-    // Inject extractors.js if not already present
-    if (!window.extractVAT) {
-      const script = document.createElement('script');
-      script.src = chrome.runtime.getURL('Vat_Formats/extractors.js');
-      document.documentElement.appendChild(script);
-      await new Promise(resolve => {
-        script.onload = resolve;
-      });
-    }
-    // Extract VAT from page text
-    const bodyText = document.body.innerText;
-    const result = window.extractVAT
-      ? window.extractVAT(bodyText) || 'VAT number not found on this page.'
-      : 'VAT extractor not loaded.';
-    sendResponse({ result });
-    return true;
-  }
-
-  if (message.action === "ocrImage" && message.imageDataUrl) {
-    // Inject Tesseract.js if not already present
-    if (!window.Tesseract) {
-      const script = document.createElement('script');
-      script.src = chrome.runtime.getURL('scripts/tesseract.min.js');
-      document.documentElement.appendChild(script);
-      await new Promise(resolve => {
-        script.onload = resolve;
-      });
-    }
-    // Run OCR on the provided image data URL
-    if (window.Tesseract) {
-      window.Tesseract.recognize(
-        message.imageDataUrl,
-        'eng'
-      ).then(({ data: { text } }) => {
-        sendResponse({ text });
-      }).catch(() => {
-        sendResponse({ text: 'OCR failed.' });
-      });
-      return true; // Keep the message channel open for async response
-    } else {
-      sendResponse({ text: 'Tesseract.js not loaded.' });
-      return true;
-    }
-  }
-
-  // Listen for messages from the extension
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log("Message received in content script:", request.action);
-    
+// Listen for messages from the extension
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "getScrollDimensions") {
-        const dimensions = {
+        sendResponse({
             width: Math.max(
                 document.documentElement.scrollWidth,
                 document.body.scrollWidth,
@@ -69,27 +19,38 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
             ),
             scrollX: window.scrollX,
             scrollY: window.scrollY
-        };
-        console.log("Sending dimensions:", dimensions);
-        sendResponse(dimensions);
+        });
     }
+
+    if (request.action === "extractVAT") {
+        chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+            if (!tab.url.startsWith('http')) {
+                // Show error to user
+                document.getElementById('text-output').textContent = 'VAT extraction not supported on this page.';
+                return;
+            }
+
+            const text = document.body.innerText;
+            // German VAT number pattern
+            const vatPatternDE = /\bDE\s?\d{9}\b/g;
+            // Swiss VAT number pattern
+            const vatPatternCHE = /\bCHE-?\d{3}\.?\d{3}\.?\d{3}\b/g;
+            
+            const matches = [];
+            let match;
+
+            while ((match = vatPatternDE.exec(text)) !== null) {
+                matches.push(match[0].replace(/\s/g, ''));
+            }
+
+            while ((match = vatPatternCHE.exec(text)) !== null) {
+                matches.push(match[0].replace(/[.\-\s]/g, ''));
+            }
+
+            sendResponse({ vatNumbers: matches });
+        });
+    }
+
     // Return true to indicate we will send a response asynchronously
     return true;
-});
-});
-
-chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-  const tab = tabs[0];
-  if (!tab.url.startsWith('http')) {
-    alert('Screenshot only works on regular web pages.');
-    return;
-  }
-  chrome.tabs.sendMessage(tab.id, {action: "getScrollDimensions"}, (response) => {
-    if (chrome.runtime.lastError) {
-      console.error('Content script not found:', chrome.runtime.lastError.message);
-      // Fallback: use window.innerWidth/Height if possible, or show an error
-      return;
-    }
-    // ...continue with screenshot logic...
-  });
 });

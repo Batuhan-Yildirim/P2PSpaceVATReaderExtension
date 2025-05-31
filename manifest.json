@@ -4,10 +4,6 @@
   "version": "1.0",
   "description": "A Chrome extension for VAT Reader",
   "author": "Batuhan YILDIRIM",
-  "host_permissions": ["<all_urls>"],
-  "background": {
-    "service_worker": "scripts/background.js"
-  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": "image/icon.png"
@@ -30,9 +26,6 @@
     "16": "image/icon.png",
     "48": "image/icon.png",
     "128": "image/icon.png"
-  },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   },
   "content_scripts": [{
     "matches": ["<all_urls>"],
