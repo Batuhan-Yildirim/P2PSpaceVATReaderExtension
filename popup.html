@@ -6,8 +6,7 @@
   <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-    <!-- Welcome Page Overlay -->
-    <div id="welcome-page">
+  <div id="welcome-page">
       <div id="welcome-logo-title">
         <span id="welcome-wallet">VAT READER</span>
       </div>
@@ -22,12 +21,16 @@
       </button>      
       </div>
     </div>
-    <!-- Extract Data Page -->
-    <div class="vat-card" id="extract-page" style="display:none; margin-top: 20px;">
+    <div class="vat-tabs">
+      <button class="vat-tab active" id="tab-extract">Extract Data</button>
+      <button class="vat-tab" id="tab-pdf">Extract PDF Text</button>
+      <button class="vat-tab" id="tab-screenshot">Capture Screenshot</button>
+    </div>
+    <div class="vat-card" id="section-extract">
+      <!-- Extract Data Section -->
       <div class="copy-area">
         <div id="output" class="copy-input">
-            <div id="text-output" style="display: block;">Extracted text...</div>
-            <img id="screenshot-preview" style="max-width: 100%; display: none;">
+          <div id="text-output" style="display: block;">Extracted text...</div>
         </div>
         <button id="copy-btn-main" class="copy-btn-main" title="Copy to Clipboard">
           <img src="image/copy-icon.svg" alt="Copy" style="width:24px;height:24px;">
@@ -38,22 +41,44 @@
         <button class="main-action-btn" id="extract-button">&#128269; Extract Data</button>
         <button class="main-action-btn" id="delete-btn">🗑️ Delete</button>
       </div>
-    <input type="file" id="pdf-text-input" accept="application/pdf" style="display:none;">
-    <button id="pdf-text-btn" class="main-action-btn">
+    </div>
+    <div class="vat-card" id="section-pdf" style="display:none;">
+      <!-- Extract PDF Text Section -->
+      <!-- Hide the file input -->
+      <input type="file" id="pdf-text-input" accept="application/pdf" style="display:none;">
+      <button id="pdf-text-btn" class="main-action-btn">
         <img src="image/pdf-icon.svg" alt="PDF" style="width:16px;height:16px;margin-right:4px;">
         Extract PDF Text
-    </button>
-    <button id="capture-btn" class="main-action-btn">
-      <img src="image/screenshot-icon.svg" alt="Screenshot" style="width:16px;height:16px;margin-right:4px;">
-      Capture Screenshot
-    </button>
-      <img src="image/logo.png" alt="Logo" id="bottom-logo">
-      <div id="powered-title" style="margin-top: 15px;">Powered by P2P SPACE</div>
+      </button>
+      <div class="copy-area">
+        <div id="pdf-output" class="copy-input">
+          <div id="pdf-text-output" style="display: block;">Extracted PDF text...</div>
+        </div>
+        <button id="copy-btn-pdf" class="copy-btn-main" title="Copy to Clipboard">
+          <img src="image/copy-icon.svg" alt="Copy" style="width:24px;height:24px;">
+        </button>
+        <span id="copy-status-pdf" class="copy-status">Copied</span>
+      </div>
+      <div class="action-buttons">
+        <button class="main-action-btn" id="delete-btn-pdf">🗑️ Delete</button>
+      </div>
     </div>
+    <div class="vat-card" id="section-screenshot" style="display:none;">
+      <!-- Capture Screenshot Section -->
+      <button id="capture-btn" class="main-action-btn">
+        <img src="image/screenshot-icon.svg" alt="Screenshot" style="width:16px;height:16px;margin-right:4px;">
+        Capture Screenshot
+      </button>
+      <img id="screenshot-preview" style="max-width: 100%; display: none;">
+      <div class="action-buttons">
+        <button class="main-action-btn" id="delete-btn-screenshot">🗑️ Delete</button>
+      </div>
     </div>
-  <script src="scripts/pdfjs-5.2.133-dist/build/pdf.mjs" type="module"></script>
-  <script src="scripts/pdf_reader.js"></script>
-  <script src="scripts/ocr_reader.js"></script>
-  <script src="scripts/popup.js"></script>
+    <img src="image/logo.png" alt="Logo" id="bottom-logo">
+    <div id="powered-title" style="margin-top: 15px;">Powered by P2P SPACE</div>
+    <script src="scripts/pdfjs-5.2.133-dist/build/pdf.mjs" type="module"></script>
+    <script src="scripts/pdf_reader.js"></script>
+    <script src="scripts/ocr_reader.js"></script>
+    <script src="scripts/popup.js"></script>
 </body>
 </html>

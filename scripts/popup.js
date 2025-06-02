@@ -108,25 +108,21 @@ document.addEventListener('DOMContentLoaded', function () {
   
   if (pdfTextBtn && pdfTextInput) {
       pdfTextBtn.onclick = function() {
+          pdfTextInput.value = '';
           pdfTextInput.click();
       };
       
       pdfTextInput.onchange = async function(e) {
           const file = e.target.files[0];
           if (file) {
-              const textOutput = document.getElementById('text-output');
-              const screenshotPreview = document.getElementById('screenshot-preview');
-              
-              textOutput.style.display = 'block';
-              screenshotPreview.style.display = 'none';
-              textOutput.textContent = 'Processing PDF...';
-              
+              const pdfTextOutput = document.getElementById('pdf-text-output');
+              pdfTextOutput.textContent = 'Processing PDF...';
               try {
                   const text = await window.extractTextFromPdf(file);
-                  textOutput.textContent = text || 'No text found in PDF.';
+                  pdfTextOutput.textContent = text || 'No text found in PDF.';
               } catch (err) {
                   console.error('PDF text extraction failed:', err);
-                  textOutput.textContent = 'PDF text extraction failed: ' + err.message;
+                  pdfTextOutput.textContent = 'PDF text extraction failed: ' + err.message;
               }
           }
       };
@@ -203,6 +199,20 @@ document.addEventListener('DOMContentLoaded', function () {
       };
   }
   
+  // Copy button for PDF text
+  const copyBtnPdf = document.getElementById('copy-btn-pdf');
+  if (copyBtnPdf) {
+    copyBtnPdf.onclick = function () {
+      const pdfText = document.getElementById('pdf-text-output').textContent;
+      navigator.clipboard.writeText(pdfText);
+      const status = document.getElementById('copy-status-pdf');
+      status.style.display = 'inline-block';
+      setTimeout(() => {
+        status.style.display = 'none';
+      }, 1200);
+    };
+  }
+
   // Keep other event listeners...
   document.getElementById('pdf-text-btn').addEventListener('click', async () => {
     const input = document.getElementById('pdf-text-input');
@@ -291,6 +301,20 @@ document.addEventListener('DOMContentLoaded', function () {
   } else {
       console.error('Extract button not found in the DOM');
   }
+
+  // Tab switching logic
+  document.querySelectorAll('.vat-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.vat-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('section-extract').style.display = 'none';
+      document.getElementById('section-pdf').style.display = 'none';
+      document.getElementById('section-screenshot').style.display = 'none';
+      if (this.id === 'tab-extract') document.getElementById('section-extract').style.display = 'block';
+      if (this.id === 'tab-pdf') document.getElementById('section-pdf').style.display = 'block';
+      if (this.id === 'tab-screenshot') document.getElementById('section-screenshot').style.display = 'block';
+    });
+  });
 });
 
 function resizeImage(file, maxWidth = 800) {
@@ -311,4 +335,27 @@ function resizeImage(file, maxWidth = 800) {
     };
     reader.readAsDataURL(file);
   });
+}
+
+// Delete button for PDF section
+const deleteBtnPdf = document.getElementById('delete-btn-pdf');
+if (deleteBtnPdf) {
+  deleteBtnPdf.onclick = function() {
+    const pdfTextOutput = document.getElementById('pdf-text-output');
+    pdfTextOutput.textContent = 'Extracted PDF text...';
+    // Optionally reset file input
+    const pdfTextInput = document.getElementById('pdf-text-input');
+    if (pdfTextInput) pdfTextInput.value = '';
+  };
+}
+
+// Delete button for Screenshot section
+const deleteBtnScreenshot = document.getElementById('delete-btn-screenshot');
+if (deleteBtnScreenshot) {
+  deleteBtnScreenshot.onclick = function() {
+    const screenshotPreview = document.getElementById('screenshot-preview');
+    screenshotPreview.src = '';
+    screenshotPreview.style.display = 'none';
+    // Optionally reset any screenshot-related UI
+  };
 }
