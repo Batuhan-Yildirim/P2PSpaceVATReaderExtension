@@ -23,31 +23,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 
     if (request.action === "extractVAT") {
-        chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+        chrome.tabs.query({ active: true, currentWindow: true }, async ([tab]) => {
             if (!tab.url.startsWith('http')) {
                 // Show error to user
                 document.getElementById('text-output').textContent = 'VAT extraction not supported on this page.';
                 return;
             }
 
-            const text = document.body.innerText;
-            // German VAT number pattern
-            const vatPatternDE = /\bDE\s?\d{9}\b/g;
-            // Swiss VAT number pattern
-            const vatPatternCHE = /\bCHE-?\d{3}\.?\d{3}\.?\d{3}\b/g;
-            
-            const matches = [];
-            let match;
-
-            while ((match = vatPatternDE.exec(text)) !== null) {
-                matches.push(match[0].replace(/\s/g, ''));
-            }
-
-            while ((match = vatPatternCHE.exec(text)) !== null) {
-                matches.push(match[0].replace(/[.\-\s]/g, ''));
-            }
-
-            sendResponse({ vatNumbers: matches });
+            const response = await chrome.tabs.sendMessage(tab.id, { action: "extractVatNumber" });
+            sendResponse({ vatNumbers: response.vatNumbers });
         });
     }
 

@@ -18,19 +18,23 @@
       <button id="start-btn" class="welcome-btn" style="margin-top: 30px;">
         <!-- <span class="lock-icon">&#128274;</span> -->
         Start VAT Reader
-      </button>      
+      </button>
       </div>
+      <!-- Place the logo link here, at the bottom of welcome-page -->
+      <a href="https://p2pspace.com" target="_blank" id="welcome-logo-link">
+        <img src="image/logo.png" alt="P2P SPACE Logo" class="welcome-bottom-logo">
+      </a>
     </div>
     <div class="vat-tabs">
-      <button class="vat-tab active" id="tab-extract">Extract Data</button>
-      <button class="vat-tab" id="tab-pdf">Extract PDF Text</button>
-      <button class="vat-tab" id="tab-screenshot">Capture Screenshot</button>
+      <button class="vat-tab active" id="tab-extract">Read VAT</button>
+      <button class="vat-tab" id="tab-pdf">Read PDF VAT</button>
+      <button class="vat-tab" id="tab-screenshot">Capture VAT</button>
     </div>
     <!-- Extract Data Section -->
     <div class="vat-card" id="section-extract">
       <div class="copy-area">
         <div id="output" class="copy-input">
-          <div id="text-output" style="display: block;">Extracted text...</div>
+          <div id="text-output" style="display: block;">Extracted VAT...</div>
         </div>
         <button id="copy-btn-main" class="copy-btn-main" title="Copy to Clipboard">
           <img src="image/copy-icon.svg" alt="Copy" style="width:24px;height:24px;">
@@ -40,7 +44,7 @@
       <div class="action-buttons-row">
         <button class="main-action-btn" id="extract-button">
           <img src="image/search-icon.svg" alt="Extract" style="width:18px;height:18px;margin-right:6px;">
-          Extract Data
+          Extract VAT
         </button>
         <button class="main-action-btn" id="delete-btn">
           <img src="image/delete-icon.svg" alt="Delete" style="width:18px;height:18px;margin-right:6px;">
@@ -57,7 +61,7 @@
       <input type="file" id="pdf-text-input" accept="application/pdf" style="display:none;">
       <div class="copy-area">
         <div id="pdf-output" class="copy-input">
-          <div id="pdf-text-output" style="display: block;">Extracted PDF text...</div>
+          <div id="pdf-text-output" style="display: block;">Extracted PDF VAT...</div>
         </div>
         <button id="copy-btn-pdf" class="copy-btn-main" title="Copy to Clipboard">
           <img src="image/copy-icon.svg" alt="Copy" style="width:24px;height:24px;">
@@ -67,7 +71,7 @@
       <div class="action-buttons-row">
         <button class="main-action-btn" id="pdf-text-btn">
           <img src="image/pdf-icon.svg" alt="PDF" style="width:18px;height:18px;margin-right:6px;">
-          Extract PDF Text
+          Extract PDF VAT
         </button>
         <button class="main-action-btn" id="delete-btn-pdf">
           <img src="image/delete-icon.svg" alt="Delete" style="width:18px;height:18px;margin-right:6px;">

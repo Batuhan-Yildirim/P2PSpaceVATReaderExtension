@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (startBtn) {
     startBtn.onclick = function () {
       document.getElementById('welcome-page').style.display = 'none';
-      document.getElementById('extract-page').style.display = 'flex';
+      document.getElementById('section-extract').style.display = 'block';
+      document.getElementById('section-pdf').style.display = 'none';
+      document.getElementById('section-screenshot').style.display = 'none';
     };
   }
 
@@ -175,13 +177,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const copyBtn = document.getElementById('copy-btn-main');
   if (copyBtn) {
     copyBtn.onclick = function () {
-      const output = document.getElementById('output');
-      output.select();
-      document.execCommand('copy');
-      output.blur();
-      const status = document.getElementById('copy-status');
-      status.style.display = 'inline-block';
-      setTimeout(() => { status.style.display = 'none'; }, 1200);
+      const text = document.getElementById('text-output').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const status = document.getElementById('copy-status');
+        status.style.display = 'inline-block';
+        setTimeout(() => { status.style.display = 'none'; }, 1200);
+      });
     };
   }
 
@@ -203,13 +204,12 @@ document.addEventListener('DOMContentLoaded', function () {
   const copyBtnPdf = document.getElementById('copy-btn-pdf');
   if (copyBtnPdf) {
     copyBtnPdf.onclick = function () {
-      const pdfText = document.getElementById('pdf-text-output').textContent;
-      navigator.clipboard.writeText(pdfText);
-      const status = document.getElementById('copy-status-pdf');
-      status.style.display = 'inline-block';
-      setTimeout(() => {
-        status.style.display = 'none';
-      }, 1200);
+      const text = document.getElementById('pdf-text-output').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const status = document.getElementById('copy-status-pdf');
+        status.style.display = 'inline-block';
+        setTimeout(() => { status.style.display = 'none'; }, 1200);
+      });
     };
   }
 
@@ -244,10 +244,13 @@ document.addEventListener('DOMContentLoaded', function () {
                   // Display screenshot
                   const textOutput = document.getElementById('text-output');
                   const screenshotPreview = document.getElementById('screenshot-preview');
-                  
-                  textOutput.style.display = 'none';
-                  screenshotPreview.style.display = 'block';
-                  screenshotPreview.src = dataUrl;
+                  const screenshotTextOutput = document.getElementById('screenshot-text-output');
+                  if (textOutput) textOutput.style.display = 'none';
+                  if (screenshotPreview) {
+                    screenshotPreview.style.display = 'block';
+                    screenshotPreview.src = dataUrl;
+                  }
+                  if (screenshotTextOutput) screenshotTextOutput.style.display = 'none';
               } else {
                   throw new Error('Cannot capture screenshot of this page');
               }
@@ -354,8 +357,58 @@ const deleteBtnScreenshot = document.getElementById('delete-btn-screenshot');
 if (deleteBtnScreenshot) {
   deleteBtnScreenshot.onclick = function() {
     const screenshotPreview = document.getElementById('screenshot-preview');
-    screenshotPreview.src = '';
-    screenshotPreview.style.display = 'none';
-    // Optionally reset any screenshot-related UI
+    const screenshotTextOutput = document.getElementById('screenshot-text-output');
+    if (screenshotPreview && screenshotTextOutput) {
+      screenshotPreview.src = '';
+      screenshotPreview.style.display = 'none';
+      screenshotTextOutput.style.display = 'block'; // Show the text again
+    }
+  };
+}
+
+function showScreenshot(screenshotDataUrl) {
+  const screenshotPreview = document.getElementById('screenshot-preview');
+  const screenshotTextOutput = document.getElementById('screenshot-text-output');
+  if (screenshotPreview && screenshotTextOutput) {
+    screenshotPreview.src = screenshotDataUrl;
+    screenshotPreview.style.display = 'block';
+    screenshotTextOutput.style.display = 'none'; // Hide the text when screenshot is shown
+  }
+}
+
+// Example usage after capturing screenshot:
+// showScreenshot(dataUrl);
+
+const copyBtnScreenshot = document.getElementById('copy-btn-screenshot');
+if (copyBtnScreenshot) {
+  copyBtnScreenshot.onclick = async function () {
+    const screenshotPreview = document.getElementById('screenshot-preview');
+    const screenshotTextOutput = document.getElementById('screenshot-text-output');
+    const status = document.getElementById('copy-status-screenshot');
+
+    // If screenshot is visible, copy the image
+    if (screenshotPreview && screenshotPreview.style.display !== 'none' && screenshotPreview.src) {
+      try {
+        const data = await fetch(screenshotPreview.src);
+        const blob = await data.blob();
+        await navigator.clipboard.write([
+          new ClipboardItem({ [blob.type]: blob })
+        ]);
+        if (status) {
+          status.style.display = 'inline-block';
+          setTimeout(() => { status.style.display = 'none'; }, 1200);
+        }
+      } catch (err) {
+        alert('Copy image failed: ' + err.message);
+      }
+    } else if (screenshotTextOutput && screenshotTextOutput.style.display !== 'none') {
+      // Otherwise, copy the text
+      navigator.clipboard.writeText(screenshotTextOutput.textContent).then(() => {
+        if (status) {
+          status.style.display = 'inline-block';
+          setTimeout(() => { status.style.display = 'none'; }, 1200);
+        }
+      });
+    }
   };
 }

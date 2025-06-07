@@ -118,6 +118,27 @@ html, body {
   margin-right: 6px;
 }
 
+#welcome-logo-link {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: block;
+}
+
+.welcome-bottom-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  opacity: 0.92;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+.welcome-bottom-logo:hover {
+  opacity: 1;
+}
+
 /* Main Card Styles */
 body {
   background: #000 url('earth.jpg') no-repeat center bottom;
@@ -178,14 +199,14 @@ body {
   background: linear-gradient(90deg, #1F09FF 0%, #d2d0ce 100%);
   color: #fffbe6;
   font-weight: 700;
-  font-size: 1.08rem;
+  font-size: 1rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.10);
   z-index: 2;
 }
 
 .vat-tab:not(.active) {
   opacity: 0.7;
-  font-size: 0.97rem;
+  font-size: 0.90rem;
 }
 
 .vat-tab:not(.active):hover {
@@ -316,7 +337,7 @@ body {
 }
 
 #powered-title {
-  font-size: 15px;
+  font-size: 10px;
   color: #ffffff;
   font-weight: 600;
   letter-spacing: 1px;
@@ -334,7 +355,7 @@ body {
 }
 
 .powered-title {
-  font-size: 1.08rem;
+  font-size: 0.95rem;
   color: #fffbe6;
   font-weight: bold;
   letter-spacing: 1px;
