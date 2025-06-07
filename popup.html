@@ -26,8 +26,8 @@
       <button class="vat-tab" id="tab-pdf">Extract PDF Text</button>
       <button class="vat-tab" id="tab-screenshot">Capture Screenshot</button>
     </div>
+    <!-- Extract Data Section -->
     <div class="vat-card" id="section-extract">
-      <!-- Extract Data Section -->
       <div class="copy-area">
         <div id="output" class="copy-input">
           <div id="text-output" style="display: block;">Extracted text...</div>
@@ -37,21 +37,24 @@
         </button>
         <span id="copy-status" class="copy-status">Copied</span>
       </div>
-      <div class="action-buttons">
-        <button class="main-action-btn" id="extract-button">&#128269; Extract Data</button>
-        <button class="main-action-btn" id="delete-btn">🗑️ Delete</button>
-        <img src="image/logo.png" alt="Logo" id="bottom-logo">
-        <div id="powered-title">Powered by P2P SPACE</div>
+      <div class="action-buttons-row">
+        <button class="main-action-btn" id="extract-button">
+          <img src="image/search-icon.svg" alt="Extract" style="width:18px;height:18px;margin-right:6px;">
+          Extract Data
+        </button>
+        <button class="main-action-btn" id="delete-btn">
+          <img src="image/delete-icon.svg" alt="Delete" style="width:18px;height:18px;margin-right:6px;">
+          Delete
+        </button>
+      </div>
+      <div class="powered-row">
+        <img src="image/logo.png" alt="Logo" class="bottom-logo">
+        <div class="powered-title">Powered by P2P SPACE</div>
       </div>
     </div>
+    <!-- Extract PDF Text Section -->
     <div class="vat-card" id="section-pdf" style="display:none;">
-      <!-- Extract PDF Text Section -->
-      <!-- Hide the file input -->
       <input type="file" id="pdf-text-input" accept="application/pdf" style="display:none;">
-      <button id="pdf-text-btn" class="main-action-btn">
-        <img src="image/pdf-icon.svg" alt="PDF" style="width:16px;height:16px;margin-right:4px;">
-        Extract PDF Text
-      </button>
       <div class="copy-area">
         <div id="pdf-output" class="copy-input">
           <div id="pdf-text-output" style="display: block;">Extracted PDF text...</div>
@@ -61,23 +64,46 @@
         </button>
         <span id="copy-status-pdf" class="copy-status">Copied</span>
       </div>
-      <div class="action-buttons">
-        <button class="main-action-btn" id="delete-btn-pdf">🗑️ Delete</button>
-        <img src="image/logo.png" alt="Logo" id="bottom-logo">
-        <div id="powered-title">Powered by P2P SPACE</div>
+      <div class="action-buttons-row">
+        <button class="main-action-btn" id="pdf-text-btn">
+          <img src="image/pdf-icon.svg" alt="PDF" style="width:18px;height:18px;margin-right:6px;">
+          Extract PDF Text
+        </button>
+        <button class="main-action-btn" id="delete-btn-pdf">
+          <img src="image/delete-icon.svg" alt="Delete" style="width:18px;height:18px;margin-right:6px;">
+          Delete
+        </button>
+      </div>
+      <div class="powered-row">
+        <img src="image/logo.png" alt="Logo" class="bottom-logo">
+        <div class="powered-title">Powered by P2P SPACE</div>
       </div>
     </div>
+    <!-- Capture Screenshot Section -->
     <div class="vat-card" id="section-screenshot" style="display:none;">
-      <!-- Capture Screenshot Section -->
-      <button id="capture-btn" class="main-action-btn">
-        <img src="image/screenshot-icon.svg" alt="Screenshot" style="width:16px;height:16px;margin-right:4px;">
-        Capture Screenshot
-      </button>
-      <img id="screenshot-preview" style="max-width: 100%; display: none;">
-      <div class="action-buttons">
-        <button class="main-action-btn" id="delete-btn-screenshot">🗑️ Delete</button>
-        <img src="image/logo.png" alt="Logo" id="bottom-logo">
-        <div id="powered-title">Powered by P2P SPACE</div>
+      <div class="copy-area">
+        <div id="screenshot-output" class="copy-input" style="padding:0; min-height:100px; display:flex; align-items:center; justify-content:center;">
+          <img id="screenshot-preview" style="max-width: 100%; max-height: 90px; display: none;">
+          <div id="screenshot-text-output" style="display: block;">Captured screenshot...</div>
+        </div>
+        <button id="copy-btn-screenshot" class="copy-btn-main" title="Copy to Clipboard">
+          <img src="image/copy-icon.svg" alt="Copy" style="width:24px;height:24px;">
+        </button>
+        <span id="copy-status-screenshot" class="copy-status">Copied</span>
+      </div>
+      <div class="action-buttons-row">
+        <button class="main-action-btn" id="capture-btn">
+          <img src="image/screenshot-icon.svg" alt="Screenshot" style="width:18px;height:18px;margin-right:6px;">
+          Capture Screenshot
+        </button>
+        <button class="main-action-btn" id="delete-btn-screenshot">
+          <img src="image/delete-icon.svg" alt="Delete" style="width:18px;height:18px;margin-right:6px;">
+          Delete
+        </button>
+      </div>
+      <div class="powered-row">
+        <img src="image/logo.png" alt="Logo" class="bottom-logo">
+        <div class="powered-title">Powered by P2P SPACE</div>
       </div>
     </div>
     <script src="scripts/pdfjs-5.2.133-dist/build/pdf.mjs" type="module"></script>

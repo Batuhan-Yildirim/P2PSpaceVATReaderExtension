@@ -142,43 +142,56 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 24px 0 24px 0;
-  background: transparent;
-  gap: 0;
+  background: rgba(24, 28, 44, 0.92); /* Match output background */
+  border-radius: 18px;
+  padding: 6px 6px;
   width: 100%;
-  max-width: 360px;
+  max-width: 340px;
+  margin: 18px auto 18px auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  gap: 0;
 }
 
 .vat-tab {
   flex: 1 1 0;
-  background: #f5f5f5;
+  background: transparent;
   border: none;
-  color: #888;
-  font-size: 17px;
+  color: #b0b0b0;
+  font-size: 1rem;
   font-weight: 500;
-  padding: 14px 0;
+  padding: 10px 0;
   margin: 0 2px;
-  border-radius: 18px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  transition: 
+    background 0.18s, 
+    color 0.18s, 
+    box-shadow 0.18s, 
+    font-size 0.18s;
   box-shadow: none;
-  z-index: 1;
-  position: relative;
   min-width: 0;
   text-align: center;
+  outline: none;
 }
 
 .vat-tab.active {
-  background: #fff;
-  color: #222;
+  background: linear-gradient(90deg, #1F09FF 0%, #d2d0ce 100%);
+  color: #fffbe6;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-size: 1.08rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
   z-index: 2;
 }
 
+.vat-tab:not(.active) {
+  opacity: 0.7;
+  font-size: 0.97rem;
+}
+
 .vat-tab:not(.active):hover {
-  background: #ececec;
-  color: #444;
+  background: rgba(255,255,255,0.08);
+  color: #fffbe6;
+  opacity: 1;
 }
 
 .vat-card {
@@ -244,10 +257,11 @@ body {
 
 .action-buttons-row {
   display: flex;
+  flex-direction: row;
   gap: 16px;
   width: 100%;
   justify-content: center;
-  margin-top: 0;
+  margin-top: 18px;
 }
 
 .main-action-btn, #extract-button {
@@ -292,6 +306,15 @@ body {
   gap: 12px;
 }
 
+.powered-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+  width: 100%;
+}
+
 #powered-title {
   font-size: 15px;
   color: #ffffff;
@@ -302,6 +325,20 @@ body {
   align-items: center;
   gap: 6px;
   text-shadow: 0 1px 8px #000, 0 0px 2px #d4d2ce;
+}
+
+.bottom-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.powered-title {
+  font-size: 1.08rem;
+  color: #fffbe6;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin: 0;
 }
 
 #bottom-logo {
@@ -319,29 +356,29 @@ body {
 
 .copy-area {
   position: relative;
-  display: flex;
-  align-items: flex-start;
   width: 100%;
   margin-bottom: 0;
-  gap: 0;
 }
 
 .copy-input {
   width: 100%;
-  padding: 10px 44px 10px 10px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 1em;
-  background: #fafbfc;
-  outline: none;
   min-height: 80px;
-  max-height: 180px;
-  overflow: auto;
-  margin: 0;
-  background: #fff;
-  border-radius: 4px;
+  height: 100px;
+  max-height: 240px;
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: rgba(24, 28, 44, 0.95);
+  color: #fffbe6;
+  font-size: 1.40rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(223, 223, 214, 0.18);
+  position: relative;
   box-sizing: border-box;
-  display: block;
+  display: flex;
+  align-items: flex-start;
 }
 
 #screenshot-preview {
@@ -364,31 +401,61 @@ body {
 }
 .copy-btn-main {
   position: absolute;
-  right: 8px;
-  background: #e6f0ff;
+  top: 12px;
+  right: 18px;
+  background: transparent;
   border: none;
-  border-radius: 6px;
-  padding: 4px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: background 0.2s;
-  transition: background 0.2s;
-}
-.copy-btn-main:hover {
-  background: #b3d1ff;
-}
-.copy-status {
-  display: none;
-  position: absolute;
-  top: -32px;
-  right: 0;
-  background: #4caf50;
-  color: #fff;
-  padding: 2px 12px;
-  border-radius: 16px;
-  font-size: 0.95em;
-  font-weight: 500;
+  padding: 0;
   z-index: 2;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.copy-status {
+  position: absolute;
+  top: 12px;
+  right: 54px;
+  color: #fffbe6;
+  background: #1F09FF;
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-size: 0.95em;
+  display: none;
+  z-index: 2;
+}
+
+/* Match Extract Data output style for PDF output */
+#pdf-output.copy-input {
+  width: 100%;
+  min-height: 80px;
+  height: 100px;
+  max-height: 240px;
+  resize: none;
+  font-size: 1.40rem;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: rgba(24, 28, 44, 0.95);
+  color: #fffbe6;
+  margin-bottom: 0;
+  box-shadow: 0 2px 8px rgba(223, 223, 214, 0.18);
+  transition: border 0.2s;
+  text-align: center;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  outline: 2px solid transparent;
+  margin-left: 0;
+  margin-right: 0;
+  display: block;
+}
+
+#pdf-text-output {
+  word-break: break-all;
+  white-space: pre-wrap;
+  font-size: 1.40rem;
+  color: #fffbe6;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-align: center;
 }
