@@ -318,97 +318,114 @@ document.addEventListener('DOMContentLoaded', function () {
       if (this.id === 'tab-screenshot') document.getElementById('section-screenshot').style.display = 'block';
     });
   });
+
+  // Activate delete buttons for all sections
+  const deleteExtractBtn = document.getElementById('delete-btn-extract');
+  const deletePdfBtn = document.getElementById('delete-btn-pdf');
+  const deleteScreenshotBtn = document.getElementById('delete-btn-screenshot');
+
+  if (deleteExtractBtn) {
+    deleteExtractBtn.addEventListener('click', () => {
+      document.getElementById('output').textContent = ''; // Clear Extract section output
+    });
+  }
+
+  if (deletePdfBtn) {
+    deletePdfBtn.addEventListener('click', () => {
+      document.getElementById('pdf-text-output').textContent = ''; // Clear PDF section output
+    });
+  }
+
+  if (deleteScreenshotBtn) {
+    deleteScreenshotBtn.addEventListener('click', () => {
+      const screenshotPreview = document.getElementById('screenshot-preview');
+      const screenshotTextOutput = document.getElementById('screenshot-text-output');
+      if (screenshotPreview) screenshotPreview.src = ''; // Clear screenshot image
+      if (screenshotPreview) screenshotPreview.style.display = 'none'; // Hide screenshot preview
+      if (screenshotTextOutput) screenshotTextOutput.textContent = ''; // Clear screenshot text
+    });
+  }
 });
 
-function resizeImage(file, maxWidth = 800) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      img.onload = () => {
-        const scale = Math.min(1, maxWidth / img.width);
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width * scale;
-        canvas.height = img.height * scale;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob(resolve, 'image/png');
-      };
-      img.src = e.target.result;
+// Set PDF.js worker source (UMD build, not .mjs)
+if (window.pdfjsLib) {
+  window.pdfjsLib.GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('scripts/pdfjs-5.2.133-dist/build/pdf.worker.js');
+}
+
+// PDF text extraction function (for button click)
+async function extractTextFromPdf(file) {
+  if (!file) throw new Error('No file selected');
+  if (!window.pdfjsLib) throw new Error('PDF.js not loaded');
+
+  const fileReader = new FileReader();
+  fileReader.readAsArrayBuffer(file);
+
+  return new Promise((resolve, reject) => {
+    fileReader.onload = async function () {
+      const typedArray = new Uint8Array(this.result);
+      try {
+        // Using PDF.js to extract text
+        const pdf = await window.pdfjsLib.getDocument(typedArray).promise;
+        let text = '';
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          const pageText = content.items.map(item => item.str).join(' ');
+          text += pageText + '\n';
+        }
+
+        // Normalize whitespace
+        const normalizedText = text.replace(/\s+/g, ' ').trim();
+
+        // Use centralized extractor if available
+        let vatNumbers = [];
+        if (typeof window.extractVatNumbers === "function") {
+          vatNumbers = window.extractVatNumbers(normalizedText);
+        } else {
+          // Fallback to local extraction
+          vatNumbers = extractVatNumbers(normalizedText);
+        }
+
+        resolve(
+          vatNumbers.length > 0
+            ? vatNumbers.join('\n')
+            : 'No German or Swiss VAT numbers found.'
+        );
+      } catch (err) {
+        reject(new Error('Error extracting text from PDF: ' + err.message));
+      }
     };
-    reader.readAsDataURL(file);
+
+    fileReader.onerror = function () {
+      reject(new Error('File reading has failed'));
+    };
   });
 }
 
-// Delete button for PDF section
-const deleteBtnPdf = document.getElementById('delete-btn-pdf');
-if (deleteBtnPdf) {
-  deleteBtnPdf.onclick = function() {
-    const pdfTextOutput = document.getElementById('pdf-text-output');
-    pdfTextOutput.textContent = 'Extracted PDF text...';
-    // Optionally reset file input
-    const pdfTextInput = document.getElementById('pdf-text-input');
-    if (pdfTextInput) pdfTextInput.value = '';
-  };
-}
+// Local fallback VAT extraction helper (only used if extractor is missing)
+function extractVatNumbers(text) {
+  if (!text) return [];
+  // Germany VAT: DE followed by exactly 9 digits
+  const vatRegexDE = /\bDE\s*(\d{9})\b/g;
+  // Switzerland VAT: CHE-123.456.789, CHE123456789, CHE-123456789, CHE123.456.789
+  const vatRegexCHE = /\bCHE[-\s]?(\d{3})[.\s]?(\d{3})[.\s]?(\d{3})\b/g;
 
-// Delete button for Screenshot section
-const deleteBtnScreenshot = document.getElementById('delete-btn-screenshot');
-if (deleteBtnScreenshot) {
-  deleteBtnScreenshot.onclick = function() {
-    const screenshotPreview = document.getElementById('screenshot-preview');
-    const screenshotTextOutput = document.getElementById('screenshot-text-output');
-    if (screenshotPreview && screenshotTextOutput) {
-      screenshotPreview.src = '';
-      screenshotPreview.style.display = 'none';
-      screenshotTextOutput.style.display = 'block'; // Show the text again
+  const matchesDE = [];
+  let match;
+  while ((match = vatRegexDE.exec(text)) !== null) {
+    if (match[1].length === 9) {
+      matchesDE.push(`DE${match[1]}`);
     }
-  };
-}
-
-function showScreenshot(screenshotDataUrl) {
-  const screenshotPreview = document.getElementById('screenshot-preview');
-  const screenshotTextOutput = document.getElementById('screenshot-text-output');
-  if (screenshotPreview && screenshotTextOutput) {
-    screenshotPreview.src = screenshotDataUrl;
-    screenshotPreview.style.display = 'block';
-    screenshotTextOutput.style.display = 'none'; // Hide the text when screenshot is shown
   }
-}
 
-// Example usage after capturing screenshot:
-// showScreenshot(dataUrl);
-
-const copyBtnScreenshot = document.getElementById('copy-btn-screenshot');
-if (copyBtnScreenshot) {
-  copyBtnScreenshot.onclick = async function () {
-    const screenshotPreview = document.getElementById('screenshot-preview');
-    const screenshotTextOutput = document.getElementById('screenshot-text-output');
-    const status = document.getElementById('copy-status-screenshot');
-
-    // If screenshot is visible, copy the image
-    if (screenshotPreview && screenshotPreview.style.display !== 'none' && screenshotPreview.src) {
-      try {
-        const data = await fetch(screenshotPreview.src);
-        const blob = await data.blob();
-        await navigator.clipboard.write([
-          new ClipboardItem({ [blob.type]: blob })
-        ]);
-        if (status) {
-          status.style.display = 'inline-block';
-          setTimeout(() => { status.style.display = 'none'; }, 1200);
-        }
-      } catch (err) {
-        alert('Copy image failed: ' + err.message);
-      }
-    } else if (screenshotTextOutput && screenshotTextOutput.style.display !== 'none') {
-      // Otherwise, copy the text
-      navigator.clipboard.writeText(screenshotTextOutput.textContent).then(() => {
-        if (status) {
-          status.style.display = 'inline-block';
-          setTimeout(() => { status.style.display = 'none'; }, 1200);
-        }
-      });
+  const matchesCHE = [];
+  while ((match = vatRegexCHE.exec(text)) !== null) {
+    const digits = match.slice(1).join('');
+    if (digits.length === 9) {
+      matchesCHE.push(`CHE-${digits.slice(0,3)}.${digits.slice(3,6)}.${digits.slice(6,9)}`);
     }
-  };
+  }
+
+  return [...matchesDE, ...matchesCHE];
 }

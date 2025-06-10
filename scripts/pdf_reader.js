@@ -6,21 +6,20 @@ async function extractTextFromPdf(file) {
         throw new Error('PDF.js not loaded');
     }
 
-    // Set worker source path
-    const workerSrc = chrome.runtime.getURL('scripts/pdfjs-5.2.133-dist/build/pdf.worker.mjs');
-    window['pdfjsLib'].GlobalWorkerOptions.workerSrc = workerSrc;
+    // Set worker source path (UMD build)
+    window['pdfjsLib'].GlobalWorkerOptions.workerSrc = chrome.runtime.getURL('scripts/pdfjs-5.2.133-dist/build/pdf.worker.js');
 
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        
+
         reader.onload = async function(e) {
             try {
                 const typedArray = new Uint8Array(e.target.result);
                 const loadingTask = window['pdfjsLib'].getDocument({data: typedArray});
                 const pdf = await loadingTask.promise;
-                
+
                 let fullText = '';
-                
+
                 // Extract text from each page
                 for (let i = 1; i <= pdf.numPages; i++) {
                     const page = await pdf.getPage(i);
@@ -28,20 +27,29 @@ async function extractTextFromPdf(file) {
                     const pageText = content.items.map(item => item.str).join(' ');
                     fullText += pageText + '\n';
                 }
-                
+
                 resolve(fullText.trim());
             } catch (err) {
                 console.error('PDF processing failed:', err);
                 reject(err);
             }
         };
-        
+
         reader.onerror = (err) => {
             console.error('FileReader failed:', err);
             reject(err);
         };
-        
+
         reader.readAsArrayBuffer(file);
+    }).then(fullText => {
+        // Use the centralized VAT extractor from Vat_Formats/extractors.js
+        if (typeof window.extractVatNumbers === "function") {
+            const vatNumbers = window.extractVatNumbers(fullText, { countries: ['DE', 'CHE'] });
+            return vatNumbers.length > 0 ? vatNumbers.join('\n') : 'No German or Swiss VAT numbers found.';
+        } else {
+            // Fallback: return all text if extractor is missing
+            return 'VAT extractor not loaded.\n\n' + fullText;
+        }
     });
 }
 
