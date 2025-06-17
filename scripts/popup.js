@@ -156,21 +156,31 @@ document.addEventListener('DOMContentLoaded', function () {
   // Extract DE and CHE VAT numbers from text (as in background.js)
   function extractVatNumbers(text) {
     if (!text) return [];
-    // Germany VAT: DE123456789, DE 123456789, DE 123 456 789, 123456789
-    const vatRegexDE = /\bDE\s?\d{9}\b|\bDE\s?\d{3}\s?\d{3}\s?\d{3}\b|\b\d{9}\b/gi;
-    // Switzerland VAT: CHE-123.456.789, CHE123456789, CHE-123456789, CHE123.456.789
-    const vatRegexCHE = /\bCHE[-\s]?\d{3}[.\s]?\d{3}[.\s]?\d{3}\b/gi;
+    // Normalize: collapse all whitespace to single spaces and remove spaces after DE
+    const normalized = text.replace(/\s+/g, ' ').replace(/DE\s+(\d)/g, 'DE$1');
 
-    const matchesDE = text.match(vatRegexDE) || [];
-    const matchesCHE = text.match(vatRegexCHE) || [];
+    // Germany VAT: DE followed by exactly 9 digits
+    const vatRegexDE = /\bDE\s*(\d{9})\b/g;
+    // Switzerland VAT: all allowed formats
+    const vatRegexCHE = /\bCHE[-.\s]?(\d{3})[-.\s]?(\d{3})[-.\s]?(\d{3})\b/g;
 
-    // Normalize CHE format to CHE-123.456.789
-    const normalizedCHE = matchesCHE.map(vat => {
-      const digits = vat.replace(/[^\d]/g, '');
-      return digits.length === 9 ? `CHE-${digits.slice(0,3)}.${digits.slice(3,6)}.${digits.slice(6,9)}` : vat;
-    });
+    const matchesDE = [];
+    let match;
+    while ((match = vatRegexDE.exec(normalized)) !== null) {
+      if (match[1].length === 9) {
+        matchesDE.push(`DE${match[1]}`);
+      }
+    }
 
-    return [...matchesDE, ...normalizedCHE];
+    const matchesCHE = [];
+    while ((match = vatRegexCHE.exec(normalized)) !== null) {
+      const digits = match.slice(1).join('');
+      if (digits.length === 9) {
+        matchesCHE.push(`CHE-${digits.slice(0,3)}.${digits.slice(3,6)}.${digits.slice(6,9)}`);
+      }
+    }
+
+    return [...matchesDE, ...matchesCHE];
   }
 
   // Copy button logic
@@ -406,21 +416,24 @@ async function extractTextFromPdf(file) {
 // Local fallback VAT extraction helper (only used if extractor is missing)
 function extractVatNumbers(text) {
   if (!text) return [];
+  // Normalize: collapse all whitespace to single spaces and remove spaces after DE
+  const normalized = text.replace(/\s+/g, ' ').replace(/DE\s+(\d)/g, 'DE$1');
+
   // Germany VAT: DE followed by exactly 9 digits
   const vatRegexDE = /\bDE\s*(\d{9})\b/g;
-  // Switzerland VAT: CHE-123.456.789, CHE123456789, CHE-123456789, CHE123.456.789
-  const vatRegexCHE = /\bCHE[-\s]?(\d{3})[.\s]?(\d{3})[.\s]?(\d{3})\b/g;
+  // Switzerland VAT: all allowed formats
+  const vatRegexCHE = /\bCHE[-.\s]?(\d{3})[-.\s]?(\d{3})[-.\s]?(\d{3})\b/g;
 
   const matchesDE = [];
   let match;
-  while ((match = vatRegexDE.exec(text)) !== null) {
+  while ((match = vatRegexDE.exec(normalized)) !== null) {
     if (match[1].length === 9) {
       matchesDE.push(`DE${match[1]}`);
     }
   }
 
   const matchesCHE = [];
-  while ((match = vatRegexCHE.exec(text)) !== null) {
+  while ((match = vatRegexCHE.exec(normalized)) !== null) {
     const digits = match.slice(1).join('');
     if (digits.length === 9) {
       matchesCHE.push(`CHE-${digits.slice(0,3)}.${digits.slice(3,6)}.${digits.slice(6,9)}`);

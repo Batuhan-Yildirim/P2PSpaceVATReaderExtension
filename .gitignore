@@ -1,4 +1,51 @@
-node_modules
-node_modules
-node_modules
-node_modules
+# Node.js dependencies
+node_modules/
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
+*.code-workspace
+
+# Git-specific files
+.git/
+.gitignore
+
+# Chrome extension build artifacts
+dist/
+build/
+*.crx
+*.pem
+
+# Cache files
+.cache/
+
+# Ignore PDF.js worker files if not needed
+scripts/pdfjs-5.2.133-dist/build/pdf.worker.js
+scripts/pdfjs-5.2.133-dist/build/pdf.worker.mjs
+
+# Ignore OCR-related large files
+scripts/tesseract.js-6.0.1/dist/browser/tesseract.min.js
+scripts/tesseract.js-6.0.1/dist/browser/tesseract.worker.js
+
+# Ignore test files
+tests/
+*.test.js
+*.spec.js
+
+# Ignore debug files
+debug/
+*.debug.js
+
+# Sensitive files
+.env
+config.json
+secrets.json

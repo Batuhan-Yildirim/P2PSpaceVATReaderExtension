@@ -1,71 +1,131 @@
 # VAT Reader Chrome Extension
 
-This Chrome extension allows users to extract VAT numbers from web pages in various formats (e.g., `DExxxxxxxxx`, `DE xxxxxxxxx`, `DE xxx xxx xxx`, `xxxxxxxxx`, `CHE-123.456.789`, `CHE123456789`, etc.). The extension features a modern popup UI, supports OCR extraction from images using Tesseract.js, and enables copying or clearing the extracted VAT number.
-
-## Features
-
-- Extract VAT numbers from the current web page in multiple formats (supports Germany, Switzerland, and more).
-- OCR: Extract VAT numbers from images using Tesseract.js.
-- Clean and modern popup interface with a welcome page.
-- Copy extracted VAT number to clipboard.
-- Clear/Delete extracted result.
-- Editable extract area.
-- Powered by P2P SPACE.
-
-## How to Use
-
-1. **Load the extension in Chrome:**
-   - Open Chrome and navigate to `chrome://extensions/`.
-   - Enable "Developer mode".
-   - Click "Load unpacked" and select the `P2PSpace` project folder.
-
-2. **Extract VAT Number from a Web Page:**
-   - Click the extension icon in the Chrome toolbar.
-   - On the welcome page, click "Start VAT Reader".
-   - Click the "Extract Data" button to extract the VAT number from the current page.
-   - Use the "Copy" button to copy the result, or "Delete" to clear the output.
-
-3. **!Coming Soon! - Extract VAT Number from an Image (OCR):**
-   - Click the "OCR from Image" button.
-   - Select an image file containing a VAT number.
-   - The extracted text will appear in the extract area.
-
-## Project Structure
-
-
-/P2PSpace │ ├── manifest.json ├── popup.html ├── scripts/ │ ├── popup.js │ ├── content.js │ ├── background.js │ └── tesseract.min.js ├── styles/ │ └── styles.css ├── Vat_Formats/ │ └── extractors.js ├── assets/ │ ├── icon.png │ ├── logo.png │ └── earth.jpg └── README.md
-
-#
-## File Descriptions
-
-- **manifest.json**: Chrome extension manifest (MV3).
-- **popup.html**: Popup UI for the extension (welcome and extract pages).
-- **scripts/popup.js**: Handles popup UI logic and messaging.
-- **scripts/content.js**: Handles extraction and OCR logic in the context of the web page.
-- **scripts/background.js**: Handles communication and script injection.
-- **scripts/tesseract.min.js**: Tesseract.js library for OCR.
-- **styles/styles.css**: Styles for the popup UI.
-- **Vat_Formats/extractors.js**: Centralized VAT extraction logic for multiple countries.
-- **assets/**: Contains images and icons used in the extension.
-
-## VAT Extraction Logic
-
-The extension extracts VAT numbers in the following formats:
-- Germany: `DExxxxxxxxx`, `DE xxxxxxxxx`, `DE xxx xxx xxx`, `xxxxxxxxx`
-- Switzerland: `CHE-123.456.789`, `CHE123456789`, `CHE-123456789`, `CHE123.456.789` (always outputs as `CHE-123.456.789`)
-- More countries can be added in `Vat_Formats/extractors.js`.
-
-All spaces, hyphens, and periods are normalized in the result for consistency.
-
-## OCR Functionality
-
-- Uses [Tesseract.js](https://github.com/naptha/tesseract.js) to extract text (including VAT numbers) from images.
-- Accessible via the "OCR from Image" button in the popup.
-
-## Libraries Used
-
-- [Tesseract.js](https://github.com/naptha/tesseract.js) for OCR functionality.
+**VAT Reader** is a Chrome extension that allows you to instantly extract and verify EU VAT numbers (with a focus on German and Swiss VAT formats) from any web page, PDF, or image using OCR.
 
 ---
 
-**Powered by P2P SPACE**
+## Features
+
+- **Extract VAT numbers** from web pages, PDFs, and screenshots.
+- **Supports German (DE) and Swiss (CHE) VAT formats**:
+  - German: `DE` followed by exactly 9 digits (e.g., `DE123456789`)
+  - Swiss: Accepts all common formats (e.g., `CHE-123.456.789`, `CHE123456789`, `CHE123.456.789`, etc.), always outputs as `CHE-123.456.789`
+- **OCR support** for images using [Tesseract.js](https://github.com/naptha/tesseract.js).
+- **Tab-based UI** for switching between extraction modes.
+- **Delete/Clear buttons** for each section.
+- **Responsive and modern popup UI**.
+
+---
+
+## Installation
+
+1. **Clone or download this repository.**
+2. **Install dependencies** (if you want to build or use OCR locally):
+    ```sh
+    npm install
+    ```
+3. **Build (optional):**
+    - If you use a build system like Webpack, run `npm run build`.
+    - For most users, you can use the files as-is.
+
+4. **Load the extension in Chrome:**
+    - Go to `chrome://extensions/`
+    - Enable "Developer mode"
+    - Click "Load unpacked"
+    - Select the project folder
+
+---
+
+## Usage
+
+1. Click the VAT Reader icon in your Chrome toolbar.
+2. Use the tabs to:
+    - **Read VAT:** Extract VAT numbers from the current web page.
+    - **Read PDF VAT:** Upload a PDF and extract VAT numbers.
+    - **Capture VAT:** Use OCR to extract VAT numbers from images/screenshots.
+3. Use the **delete** buttons to clear results in each section.
+
+---
+
+## VAT Number Formats Supported
+
+- **German VAT:**  
+  - Format: `DE` followed by exactly 9 digits (e.g., `DE123456789`)
+- **Swiss VAT:**  
+  - Formats accepted:  
+    - `CHE-123.456.789`
+    - `CHE123456789`
+    - `CHE123.456.789`
+    - `CHE-123456789`
+    - `CHE-123-456-789`
+    - `CHE123-456-789`
+    - `CHE.123.456.789`
+  - Output is always normalized to: `CHE-123.456.789`
+
+---
+
+## Technologies Used
+
+- [Tesseract.js](https://github.com/naptha/tesseract.js) for OCR
+- [PDF.js](https://mozilla.github.io/pdf.js/) for PDF text extraction
+- JavaScript, HTML, CSS
+
+---
+
+## File Structure
+
+```
+├── manifest.json
+├── popup.html
+├── styles/
+│   └── styles.css
+├── scripts/
+│   ├── popup.js
+│   ├── pdf_reader.js
+│   ├── ocr_reader.js
+│   └── pdfjs-5.2.133-dist/
+│       └── build/
+│           ├── pdf.js
+│           └── pdf.worker.js
+├── Vat_Formats/
+│   └── extractors.js
+├── image/
+│   └── logo.png
+└── README.md
+```
+
+---
+
+## Development
+
+- **OCR:** Uses Tesseract.js for extracting text from images/screenshots.
+- **PDF Extraction:** Uses PDF.js to extract text from PDFs, then applies VAT extraction logic.
+- **Centralized VAT Extraction:** All VAT extraction logic is in `Vat_Formats/extractors.js` for consistency.
+
+---
+
+## Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## License
+
+[MIT](LICENSE)
+
+---
+
+## Credits
+
+- [Tesseract.js](https://github.com/naptha/tesseract.js)
+
+## Future Updated
+
+1) More Country Format  will be here! (FR -> GB -> IT -> ES -> PL ->.........)
+
+2) Capture VAT number will replace with image VAT number extraction!
+
+3) Design and Style will improve based on files logic!
+
+4) Some VAT numbers extraction logic will develop!

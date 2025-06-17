@@ -5,20 +5,13 @@ function extractCHEVAT(text) { /* ...as above... */ }
 function extractVAT(text) { /* ...as above... */ }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "extractVAT" && message.tabId) {
-    chrome.scripting.executeScript(
-      {
-        target: { tabId: message.tabId },
-        func: () => {
-          let bodyText = document.body.innerText;
-          // Use the centralized extractVAT function
-          return extractVAT(bodyText) || 'VAT number not found on this page.';
-        }
-      },
-      (results) => {
-        sendResponse({ result: results && results[0] ? results[0].result : null });
-      }
-    );
-    return true;
+  if (message.action === "extractVatNumber") {
+    // Do something async
+    someAsyncFunction().then(result => {
+      sendResponse({ vat: result });
+    }).catch(err => {
+      sendResponse({ error: err.message });
+    });
+    return true; // <--- Only if you will call sendResponse later
   }
 });

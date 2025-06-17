@@ -43,13 +43,13 @@ async function extractTextFromPdf(file) {
         reader.readAsArrayBuffer(file);
     }).then(fullText => {
         // Use the centralized VAT extractor from Vat_Formats/extractors.js
+        let vatNumbers = [];
         if (typeof window.extractVatNumbers === "function") {
-            const vatNumbers = window.extractVatNumbers(fullText, { countries: ['DE', 'CHE'] });
-            return vatNumbers.length > 0 ? vatNumbers.join('\n') : 'No German or Swiss VAT numbers found.';
+          vatNumbers = window.extractVatNumbers(fullText, { countries: ['DE', 'CHE'] });
         } else {
-            // Fallback: return all text if extractor is missing
-            return 'VAT extractor not loaded.\n\n' + fullText;
+          vatNumbers = extractVatNumbers(fullText, { countries: ['DE', 'CHE'] });
         }
+        return vatNumbers.length > 0 ? vatNumbers.join('\n') : 'No German or Swiss VAT numbers found.';
     });
 }
 
