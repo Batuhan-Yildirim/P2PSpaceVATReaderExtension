@@ -3,7 +3,7 @@
   "name": "Vat Reader",
   "version": "1.0",
   "description": "A Chrome extension for VAT Reader",
-  "author": "Batuhan YILDIRIM",
+  "author": "P2P Space",
   "action": {
     "default_popup": "popup.html",
     "default_icon": "image/icon.png"

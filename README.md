@@ -1,4 +1,4 @@
-# VAT Reader Chrome Extension
+# VAT Reader Chrome Extension developed by P2P Space
 
 **VAT Reader** is a Chrome extension that allows you to instantly extract and verify EU VAT numbers (with a focus on German and Swiss VAT formats) from any web page, PDF, or image using OCR.
 
