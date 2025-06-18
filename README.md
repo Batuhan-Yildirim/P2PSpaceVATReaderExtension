@@ -129,3 +129,5 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 3) Design and Style will improve based on files logic!
 
 4) Some VAT numbers extraction logic will develop!
+
+> All Data is not saving in the database. When you close the application, data will disappear definitely!

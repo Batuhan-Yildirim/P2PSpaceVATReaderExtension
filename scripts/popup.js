@@ -355,6 +355,53 @@ document.addEventListener('DOMContentLoaded', function () {
       if (screenshotTextOutput) screenshotTextOutput.textContent = ''; // Clear screenshot text
     });
   }
+
+const copyBtnScreenshot = document.getElementById('copy-btn-screenshot');
+const screenshotImg = document.getElementById('screenshot-preview');
+const screenshotText = document.getElementById('screenshot-text-output');
+const copyStatus = document.getElementById('copy-status-screenshot');
+
+if (copyBtnScreenshot && screenshotImg && screenshotText && copyStatus) {
+  copyBtnScreenshot.addEventListener('click', async () => {
+    let copied = false;
+
+    // Attempt to copy image if visible and has valid data URI
+    if (screenshotImg.style.display !== 'none' && screenshotImg.src.startsWith('data:image/')) {
+      try {
+        const response = await fetch(screenshotImg.src);
+        const blob = await response.blob();
+
+        await navigator.clipboard.write([
+          new ClipboardItem({ [blob.type]: blob })
+        ]);
+
+        copied = true;
+      } catch (error) {
+        console.error('Image copy failed:', error);
+      }
+    }
+
+    // If image wasn't copied, fallback to copying text
+    if (!copied && screenshotText.textContent.trim()) {
+      try {
+        await navigator.clipboard.writeText(screenshotText.textContent.trim());
+        copied = true;
+      } catch (error) {
+        console.error('Text copy failed:', error);
+      }
+    }
+
+    // Show copy status
+    copyStatus.textContent = copied ? 'Copied!' : 'Copy Failed';
+    copyStatus.style.display = 'inline-block';
+
+    setTimeout(() => {
+      copyStatus.style.display = 'none';
+      copyStatus.textContent = ''; // Reset
+    }, 1500);
+  });
+}
+
 });
 
 // Set PDF.js worker source (UMD build, not .mjs)
