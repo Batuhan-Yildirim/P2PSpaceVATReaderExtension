@@ -1,6 +1,6 @@
-# VAT Reader Chrome Extension developed by P2P Space
+# VAT Reader Chrome Extension Developed by P2P Space
 
-<img src="image\icon.png" alt="notion avatar" width="100" height="100" align="left">
+<img src="image\icon.png" alt="notion avatar" width="100" height="100" align="left"> 
 
 **VAT Reader** is a Chrome extension that allows you to instantly extract and verify EU VAT numbers (with a focus on German and Swiss VAT formats) from any web page, PDF, or image using OCR.
 
@@ -12,7 +12,7 @@
 - **Supports German (DE) and Swiss (CHE) VAT formats**:
   - German: `DE` followed by exactly 9 digits (e.g., `DE123456789`)
   - Swiss: Accepts all common formats (e.g., `CHE-123.456.789`, `CHE123456789`, `CHE123.456.789`, etc.), always outputs as `CHE-123.456.789`
-- **OCR support** for images using [Tesseract.js](https://github.com/naptha/tesseract.js).
+- **OCR support** for images using [Tesseract.js](https://github.com/naptha/tesseract.js). "Coming Soon"
 - **Tab-based UI** for switching between extraction modes.
 - **Delete/Clear buttons** for each section.
 - **Responsive and modern popup UI**.
