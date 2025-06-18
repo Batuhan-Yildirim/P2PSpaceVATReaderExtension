@@ -120,14 +120,20 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 - [Tesseract.js](https://github.com/naptha/tesseract.js)
 
-## Future Updated
+## 🔧 Planned Future Updates
 
-1) More Country Format  will be here! (FR -> GB -> IT -> ES -> PL ->.........)
+1) Expanded Country Support
+Additional country formats will be introduced, including France (FR), United Kingdom (GB), Italy (IT), Spain (ES), Poland (PL), and more.
 
-2) Capture VAT number will replace with image VAT number extraction!
+2) Image-Based VAT Extraction
+The current "Capture VAT Number" feature will be enhanced to support automatic VAT number extraction from images.
 
-3) Design and Style will improve based on files logic!
+3) UI/UX Improvements
+Design and styling will be refined based on the underlying file logic to improve usability and visual consistency.
 
-4) Some VAT numbers extraction logic will develop!
+4) Enhanced VAT Extraction Logic
+New logic will be developed to support more complex VAT number extraction scenarios.
 
-> All Data is not saving in the database. When you close the application, data will disappear definitely!
+
+
+> "Warning: Some data is not being persisted to the database. Closing the application will result in the permanent loss of any unsaved information."
