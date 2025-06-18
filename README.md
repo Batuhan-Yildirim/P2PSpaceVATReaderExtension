@@ -3,7 +3,8 @@
 <img src="image\icon.png" alt="notion avatar" width="100" height="100" align="left"> 
 
 #VAT Reader 
-- VAT Reader is a Chrome extension that allows you to instantly extract and verify EU VAT numbers (with a focus on German and Swiss VAT formats) from any web page, PDF, or image using OCR.
+
+VAT Reader is a Chrome extension that allows you to instantly extract and verify EU VAT numbers (with a focus on German and Swiss VAT formats) from any web page, PDF, or image using OCR.
 
 ---
 
