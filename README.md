@@ -141,3 +141,32 @@ New logic will be developed to support more complex VAT number extraction scenar
 
 
 > "Warning: Some data is not being persisted to the database. Closing the application will result in the permanent loss of any unsaved information."
+**How Can you Use It?**
+
+1) Download Folder as ZIP Format.
+
+<img src="image\InstructionImages\InstructionImage1.png" alt="notion avatar" width="100" height="100" align="left">
+
+2) Extract P2PSpaceVATReaderExtension-main folder from ZIP.
+
+
+
+3) Open Google Chrome App from your Desktop or Laptop. (Smartphone and Tablet are not supporting!)
+
+
+
+4) Click Manage Extensions
+
+<img src="image\InstructionImages\InstructionImage2.png" alt="notion avatar" width="100" height="100" align="left">
+
+5) Choose Developer Mode and Click Load Unpacked button!
+
+<img src="image\InstructionImages\InstructionImage3.png" alt="notion avatar" width="100" height="100" align="left">
+
+6) Upload Extract P2PSpaceVATReaderExtension-main folder. 
+
+
+
+7)  Process Done!
+
+"Should you need any help using the VAT Reader extension, our team is ready to assist."
