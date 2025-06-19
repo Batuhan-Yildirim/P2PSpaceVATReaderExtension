@@ -1,6 +1,6 @@
 # VAT Reader Chrome Extension Developed by P2P Space
 
-<img src="image\icon.png" alt="notion avatar" width="100" height="100" align="left"> 
+<img src="image\icon.png" alt="P2P Logo" width="100" height="100" align="left"> 
 
 #VAT Reader 
 
@@ -145,7 +145,7 @@ New logic will be developed to support more complex VAT number extraction scenar
 
 1) Download Folder as ZIP Format.
 
-<img src="image\InstructionImages\InstructionImage1.png" alt="notion avatar" width="100" height="100" align="left">
+<img src="image\InstructionImages\InstructionImage1.png" alt="InstructionImage1">
 
 2) Extract P2PSpaceVATReaderExtension-main folder from ZIP.
 
@@ -157,11 +157,11 @@ New logic will be developed to support more complex VAT number extraction scenar
 
 4) Click Manage Extensions
 
-<img src="image\InstructionImages\InstructionImage2.png" alt="notion avatar" width="100" height="100" align="left">
+<img src="image\InstructionImages\InstructionImage2.png" alt="InstructionImage2">
 
 5) Choose Developer Mode and Click Load Unpacked button!
 
-<img src="image\InstructionImages\InstructionImage3.png" alt="notion avatar" width="100" height="100" align="left">
+<img src="image\InstructionImages\InstructionImage3.png" alt="InstructionImage3">
 
 6) Upload Extract P2PSpaceVATReaderExtension-main folder. 
 
